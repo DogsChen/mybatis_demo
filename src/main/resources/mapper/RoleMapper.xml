@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.demo.dao.RoleMapper">
+
+    <!-- 插入角色 -->
+    <insert id="insertRole" parameterType="Role" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO role (roleName, roleType, description, status, parentRole, departmentId, createById, updateById,
+                          createBy, updateBy, createTime, updateTime)
+        VALUES (#{roleName}, #{roleType}, #{description}, #{status}, #{parentRole}, #{departmentId}, #{createById},
+                #{updateById}, #{createBy}, #{updateBy}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 删除角色 -->
+    <delete id="deleteRoleById" parameterType="int">
+        DELETE
+        FROM role
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 更新角色 -->
+    <update id="updateRole" parameterType="Role">
+        UPDATE role
+        SET roleName     = #{roleName},
+            roleType     = #{roleType},
+            description  = #{description},
+            status       = #{status},
+            parentRole   = #{parentRole},
+            departmentId = #{departmentId},
+            createById   = #{createById},
+            updateById   = #{updateById},
+            createBy     = #{createBy},
+            updateBy     = #{updateBy},
+            createTime   = #{createTime},
+            updateTime   = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 查询角色 by ID -->
+    <select id="getRoleById" parameterType="int" resultType="Role">
+        SELECT *
+        FROM role
+        WHERE id = #{id}
+    </select>
+    <!-- 查询全部 -->
+    <select id="listRole" resultType="role">
+        SELECT *
+        FROM role
+    </select>
+
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.example.demo.dao.UserMapper">
+
+    <!-- user 别名 -->
+
+
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (userName, number, password, email, phone, status, intro, registerTime, lastLoginTime,
+                          lastLoginIp, lastLoginAddress, createById, updateById, createBy, updateBy, createTime,
+                          updateTime)
+        VALUES (#{userName}, #{number}, #{password}, #{email}, #{phone}, #{status}, #{intro}, #{registerTime},
+                #{lastLoginTime}, #{lastLoginIp}, #{lastLoginAddress}, #{createById}, #{updateById}, #{createBy},
+                #{updateBy}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 删除用户 -->
+    <delete id="deleteUserById" parameterType="int">
+        DELETE
+        FROM user
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 更新用户 -->
+    <update id="updateUser" parameterType="user">
+        UPDATE user
+        SET userName         = #{userName},
+            number           = #{number},
+            password         = #{password},
+            email            = #{email},
+            phone            = #{phone},
+            status           = #{status},
+            intro            = #{intro},
+            registerTime     = #{registerTime},
+            lastLoginTime    = #{lastLoginTime},
+            lastLoginIp      = #{lastLoginIp},
+            lastLoginAddress = #{lastLoginAddress},
+            createById       = #{createById},
+            updateById       = #{updateById},
+            createBy         = #{createBy},
+            updateBy         = #{updateBy},
+            createTime       = #{createTime},
+            updateTime       = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 查询用户 by ID -->
+    <select id="getUserById" parameterType="int" resultType="user">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+
+    <!-- 查询全部用户 -->
+    <select id="listUser" resultType="user">
+        SELECT *
+        FROM user
+    </select>
+
+</mapper>

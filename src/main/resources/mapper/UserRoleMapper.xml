@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.demo.dao.UserRoleMapper">
+
+    <resultMap id="UserRoleVO" type="com.example.demo.entity.VO.UserRoleVO">
+        <id property="id" javaType="long" column="id" jdbcType="INTEGER"></id>
+        <result property="userId" javaType="int" column="userId"></result>
+        <result property="userName" javaType="string" column="userName"></result>
+        <result property="roleId" javaType="int" column="roleId"></result>
+        <result property="roleName" javaType="string" column="roleName"></result>
+
+        <!-- 配置关联关系 -->
+        <association property="role" javaType="com.example.demo.entity.Role">
+            <id property="id" column="roleId"/>
+            <result property="roleName" column="roleName"/>
+        </association>
+        <association property="user" javaType="com.example.demo.entity.User">
+            <id property="id" column="userId"/>
+            <result property="userName" column="userName"/>
+        </association>
+
+    </resultMap>
+
+
+    <!--    用户具有的角色-->
+    <resultMap id="UserRoleVO2" type="com.example.demo.entity.VO.UserRoleVO2">
+        <id property="id" column="id" jdbcType="INTEGER"></id>
+        <result property="userId" javaType="int" column="userId"></result>
+        <result property="userName" javaType="string" column="userName"></result>
+        <result property="roleId" javaType="int" column="roleId"></result>
+        <result property="roleName" javaType="string" column="roleName"></result>
+
+        <association property="user" column="userId" javaType="com.example.demo.entity.User">
+            <id property="id" column="userId"/>
+            <result property="userName" column="userName"/>
+        </association>
+        <collection property="roles" ofType="com.example.demo.entity.Role">
+            <id property="id" column="roleId"/>
+            <result property="roleName" column="roleName"/>
+        </collection>
+
+    </resultMap>
+
+
+    <!-- 插入用户角色关系 -->
+    <insert id="insertUserRole" parameterType="UserRole" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO userRole (userId, roleId, createById, updateById, createBy, updateBy, createTime, updateTime)
+        VALUES (#{userId}, #{roleId}, #{createById}, #{updateById}, #{createBy}, #{updateBy}, #{createTime},
+                #{updateTime})
+    </insert>
+
+    <!-- 删除用户角色关系 by ID -->
+    <delete id="deleteUserRoleById" parameterType="int">
+        DELETE
+        FROM userRole
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 更新用户角色关系 -->
+    <update id="updateUserRole" parameterType="UserRole">
+        UPDATE userRole
+        SET userId     = #{userId},
+            roleId     = #{roleId},
+            createById = #{createById},
+            updateById = #{updateById},
+            createBy   = #{createBy},
+            updateBy   = #{updateBy},
+            createTime = #{createTime},
+            updateTime = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 查询用户角色关系 by ID -->
+    <select id="getUserRoleById" parameterType="int" resultType="UserRole">
+        SELECT *
+        FROM userRole
+        WHERE id = #{id}
+    </select>
+
+
+    <select id="getUserRoleVOById" resultMap="UserRoleVO" parameterType="int">
+        select userRole.id, userId, roleId, user.userName, role.roleName
+        from userRole
+                 inner join user on user.id = userRole.userId
+                 inner join role on role.id = userRole.roleId
+        where userRole.id = #{id}
+    </select>
+
+
+    <select id="getUserRoleVOByUserId" resultMap="UserRoleVO2">
+        select user.id, userId, roleId, user.userName, role.roleName
+        from user
+                 inner join userRole on user.id = userRole.userId
+                 inner join role on role.id = userRole.roleId
+        where user.id = #{id}
+        ORDER BY user.id
+    </select>
+
+    <select id="getUserRoleVOByUserId_Allinfo" resultMap="UserRoleVO2">
+        select user.id, userId, roleId, user.userName, role.roleName
+        from user
+                 inner join userRole on user.id = userRole.userId
+                 inner join role on role.id = userRole.roleId
+    </select>
+
+
+</mapper>
